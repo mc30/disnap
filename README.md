@@ -1,6 +1,14 @@
-# disnap R package
+# disnap
 
-disnap --- a package for analysis of disease snapshot data.
+`disnap` is an R package for analysis of disease snapshot data.
+
+## Installation
+
+To install the github version of `disnap`:
+
+```r
+devtools::install_github("mc30/disnap")
+```
 
 ## Principal purpose
 This package is used to analyse disease snapshot data, i.e. data on infection status of individual units (locations/entities) taken at discrete points in time. For example, annual data on disease occurrence from farms located in a particular region.
