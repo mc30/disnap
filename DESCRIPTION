@@ -1,19 +1,21 @@
-Package: disnap
 Type: Package
+Package: disnap
 Title: Package to analyse DISease SNAPshot data
 Version: 0.1.0
-Authors@R: person("Mikhail", "Churakov", email = "mikhail.churakov@gmail.com", role = c("aut", "cre"))
+Authors@R: 
+    person(given = "Mikhail",
+           family = "Churakov",
+           role = c("aut", "cre"),
+           email = "mikhail.churakov@gmail.com")
 Maintainer: Mikhail Churakov <mikhail.churakov@gmail.com>
-Description:
-    The package contains functions to analyse disease snapshot data (several units in space tested for disease on several occasions).
+Description: The package contains functions to analyse
+    disease snapshot data (several units in space tested for disease on
+    several occasions).
 License: MIT + file LICENSE
-Encoding: UTF-8
 Depends:
     R (>= 3.2.0)
 Imports:
-    spatstat,
-    maptools,
-    raster,
-    smacpod
+    spatstat
+Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1

@@ -2,11 +2,13 @@
 
 export(confMat)
 export(createPPPList)
+export(createRandomNetwork)
 export(densityPPPlist)
 export(logrrPPPlist)
 export(plotDistr)
 export(plotHists)
 export(plotMap)
+export(plotNetwork)
 export(plotPPPlist)
 export(satscanPPPlist)
 export(spatclustKfun)
