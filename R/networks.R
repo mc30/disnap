@@ -61,3 +61,34 @@ createRandomNetwork <- function(nv, ne, weights = rep(1, ne), bDirected = FALSE)
   
   return(adjMat)
 }
+
+
+calculateExposure <- function(node, adjMat, statusMat, column = 1) {
+  links <- which(adjMat > 0, arr.ind = T)
+  
+  sel <- which(links[, 1] == node)
+  
+  # print(length(sel)) # Incoming links
+  # print(links[sel, 2]) # Sources
+  
+  links[sel, 2]
+  
+  # print(statusMat[links[sel, 2], column])
+  
+  return(statusMat[links[sel, 2], column])
+}
+
+
+calculateMeanExposure <- function(nodes, adjMat, statusMat, column = 1) {
+  links <- 0
+  infLinks <- 0
+  for (node in nodes) {
+    contacts <- calculateExposure(node, adjMat, statusMat, column)
+    print(paste0(node, ": ", paste0(contacts, collapse = ", ")))
+    
+    links <- links + length(contacts)
+    infLinks <- infLinks + length(which(contacts > 0))
+  }
+  
+  return(c(infLinks, links))
+}
