@@ -11,7 +11,7 @@ createPPPList(statusMat, coords, cols = c(1, 2), na.rm = FALSE)
 
 \item{coords}{Coordinates of units.}
 
-\item{cols}{Columns (i.e. timepoints) to analyse.}
+\item{cols}{Columns (i.e. timepoints) to analyse, by default the first two are used.}
 
 \item{na.rm}{Whether remove NA values for each timepoint separately.}
 }

@@ -31,6 +31,7 @@ textPlot <- function(text = "", ...) {
 #' @param coords Coordinates of units.
 #' @param statusMat A matrix with statuses (NA, 0, any positive integer) of each unit. Rownames indicate location names, colnames indicate names of timepoints (e.g. years).
 #' @param column Column (i.e. timepoints) to analyse. Only one column will be used.
+#' @param bLegend Whether to add legend with statuses.
 #' 
 # @return .
 # @details .
@@ -38,11 +39,15 @@ textPlot <- function(text = "", ...) {
 #' @author Mikhail Churakov
 #'
 #' @export
-plotMap <- function(coords, statusMat, column = 1) {
+plotMap <- function(coords, statusMat, column = 1, bLegend = FALSE) {
   plot(coords$x, coords$y, col = statusMat[, column] + 1, pch = 19, asp = 1, 
        main = colnames(statusMat)[column], cex = 0.4, xlab = "", ylab = "",
        xaxt = "n", yaxt = "n")
   
   # Plot points with NA status
   points(coords$x[which(is.na(statusMat[, column]))], coords$y[which(is.na(statusMat[, column]))], cex = 0.4)
+  
+  types <- sort(unique(as.vector(statusMat)))
+  if (bLegend)
+    legend("topright", legend = types, pch = 19, col = types + 1)
 }
