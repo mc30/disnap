@@ -8,8 +8,8 @@
 #' 
 #' @param statusMat A matrix with statuses (NA, 0, any positive integer) of each unit. Rownames indicate location names, colnames indicate names of timepoints (e.g. years).
 #' @param coords Coordinates of units.
-#' @param cols Columns (i.e. timepoints) to analyse.
-#' @param bPosOnly Whether to keep only locations of positive units. 
+#' @param cols Columns (i.e. timepoints) to analyse, by default the first two are used.
+#' @param na.rm Whether remove NA values for each timepoint separately.
 #' 
 #' @return List of PPP objects.
 # @details .
@@ -17,7 +17,7 @@
 #' @author Mikhail Churakov
 #'
 #' @export
-createPPPList <- function(statusMat, coords, cols = c(1, 2), bPosOnly = FALSE) {
+createPPPList <- function(statusMat, coords, cols = c(1, 2), na.rm = FALSE) {
   # library(spatstat)
   # library(maptools)
   # library(raster)
@@ -25,10 +25,11 @@ createPPPList <- function(statusMat, coords, cols = c(1, 2), bPosOnly = FALSE) {
   # Create a list of ppp
   lst <- vector("list", length(cols))
   for (i in cols) {
-    if (bPosOnly)
-      sel <- which(statusMat[ , cols[i]] > 0)
+    if (na.rm)
+      sel <- which(!is.na(statusMat[ , cols[i]]))
     else
       sel <- 1:nrow(statusMat)
+    
     pitem <- ppp(x = coords$x[sel], y = coords$y[sel],
                  window = owin(range(coords$x[sel]), range(coords$y[sel])),
                  # marks = as.factor(statusMat[, cols[1]])
@@ -84,6 +85,8 @@ satscanPPPlist <- function(lst) {
       next
     }
     
+    print(names(lst)[i])
+    
     out <- spscan.test(lst[[i]], case = 2, alpha = 0.1)
     plot(out, chars = c(1, 20), main = paste0("Most likely cluster: ", names(lst)[i]))
   }
@@ -137,10 +140,12 @@ logrrPPPlist <- function(lst) {
   old.par <- par(mfrow = c(1, length(lst)))
   
   for (i in 1:length(lst)) {
-    if (length(levels(lst[[i]]$marks)) == 0) { # Empty plot if no cases
-      textPlot("Could not run logrr")
-      next
-    }
+    # if (length(levels(lst[[i]]$marks)) == 0) { # Empty plot if no cases
+    #   textPlot("Could not run logrr")
+    #   next
+    # }
+    
+    print(names(lst)[i])
     
     r2 <- logrr(lst[[i]], sigma = spatstat::bw.scott)
     plot(r2, main = "")
@@ -167,11 +172,15 @@ logrrPPPlist <- function(lst) {
 spatclustKfun <- function(lst, nsim = 10) {
   old.par <- par(mfrow = c(1, length(lst)))
   
+  print("Running K-function...")
+  
   for (i in 1:length(lst)) {
-    if (length(levels(lst[[i]]$marks)) == 0) { # Empty plot if no cases
-      textPlot("Could not run K-function test")
-      next
-    }
+    # if (length(levels(lst[[i]]$marks)) == 0) { # Empty plot if no cases
+    #   textPlot("Could not run K-function test")
+    #   next
+    # }
+    
+    print(names(lst)[i])
     
     # K function
     kd1 = kdest(lst[[i]])
@@ -211,11 +220,15 @@ spatclustkNN <- function(lst, nn = 20, nsim = 500, signifLevel = 0.05) {
   
   old.par <- par(mfrow = c(1, length(lst)))
   
+  print("Running kNN...")
+  
   for (i in 1:length(lst)) {
-    if (length(levels(lst[[i]]$marks)) == 0) { # Empty plot if no cases
-      textPlot("Could not run kNN test")
-      next
-    }
+    # if (length(levels(lst[[i]]$marks)) == 0) { # Empty plot if no cases
+    #   textPlot("Could not run kNN test")
+    #   next
+    # }
+    
+    print(names(lst)[i])
     
     # kNN
     x <- qnn.test(lst[[i]], nsim = nsim, q = 1:min(nn, lst[[i]]$n))

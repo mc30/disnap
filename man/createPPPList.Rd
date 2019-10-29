@@ -4,7 +4,7 @@
 \alias{createPPPList}
 \title{Create a list of PPP objects}
 \usage{
-createPPPList(statusMat, coords, cols = c(1, 2), bPosOnly = FALSE)
+createPPPList(statusMat, coords, cols = c(1, 2), na.rm = FALSE)
 }
 \arguments{
 \item{statusMat}{A matrix with statuses (NA, 0, any positive integer) of each unit. Rownames indicate location names, colnames indicate names of timepoints (e.g. years).}
@@ -13,7 +13,7 @@ createPPPList(statusMat, coords, cols = c(1, 2), bPosOnly = FALSE)
 
 \item{cols}{Columns (i.e. timepoints) to analyse.}
 
-\item{bPosOnly}{Whether to keep only locations of positive units.}
+\item{na.rm}{Whether remove NA values for each timepoint separately.}
 }
 \value{
 List of PPP objects.

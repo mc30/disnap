@@ -26,3 +26,5 @@ The following features will be added in next versions:
 
 ## Feedback
 If you have any comments, suggestions or a portion of criticism, please contact me at <mikhail.churakov@gmail.com>.
+
+Pull requests and general comments are welcome.

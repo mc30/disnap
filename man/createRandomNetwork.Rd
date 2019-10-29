@@ -11,12 +11,12 @@ createRandomNetwork(nv, ne, weights = rep(1, ne), bDirected = FALSE)
 
 \item{ne}{Number of edges (links).}
 
-\item{weights}{Weight of links (vector of length `ne`)}
+\item{weights}{Weight of links (vector of length \code{ne}).}
 
 \item{bDirected}{Whether to make the matrix symmetrical (i.e. biderectional links).}
 }
 \value{
-Adjacency matrix. Non-zero element adjMat[i, j] indicates the weight of the link between nodes i and j.
+Adjacency matrix. Non-zero element \code{adjMat[i, j]} indicates the weight of the link between nodes \code{i} and \code{j}.
 }
 \description{
 Creates a random network with the specified number of nodes and links.

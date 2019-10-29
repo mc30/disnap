@@ -37,10 +37,10 @@ plotNetwork <- function(coords, adjMat, color = "black", ...) {
 #'
 #' @param nv Number of nodes (vertices).
 #' @param ne Number of edges (links).
-#' @param weights Weight of links (vector of length ne)
+#' @param weights Weight of links (vector of length \code{ne}).
 #' @param bDirected Whether to make the matrix symmetrical (i.e. biderectional links).
 #' 
-#' @return Adjacency matrix. Non-zero element adjMat[i, j] indicates the weight of the link between nodes i and j.
+#' @return Adjacency matrix. Non-zero element \code{adjMat[i, j]} indicates the weight of the link between nodes \code{i} and \code{j}.
 # @details .
 #'
 #' @author Mikhail Churakov
