@@ -32,6 +32,7 @@ plotNetwork <- function(coords, adjMat, color = "black", ...) {
          length = 0.1, angle = 30)
 }
 
+
 #' @title Create a random network
 #' @description Creates a random network with the specified number of nodes and links.
 #'
@@ -55,7 +56,9 @@ createRandomNetwork <- function(nv, ne, weights = rep(1, ne), bDirected = FALSE)
   for (i in 1:ne) {
     adjMat[src[i], dest[i]] <- weights[i]
     
-    if (!bDirected)
+    if (bDirected) 
+      adjMat[dest[i], src[i]] <- -weights[i]
+    else
       adjMat[dest[i], src[i]] <- weights[i]
   }
   
@@ -63,7 +66,44 @@ createRandomNetwork <- function(nv, ne, weights = rep(1, ne), bDirected = FALSE)
 }
 
 
-calculateExposure <- function(node, adjMat, statusMat, column = 1) {
+#' @title Permute links.
+#' @description Permutes links in the network.
+#'
+#' @param adjMat Adjacency matrix for the network.
+#' 
+#' @return Adjacency matrix with permuted links.
+#' @details Permutation is equivalent to creating a new adjustment matrix with the same number of nodes and edges.
+#'
+#' @author Mikhail Churakov
+#' 
+#' @export
+permuteLinks <- function(adjMat) {
+  nv <- nrow(adjMat)
+  ne <- length(which(adjMat > 0))
+  
+  if (isSymmetric(adjMat))
+    newMat <- createRandomNetwork(nv, ne / 2, bDirected = FALSE) # undirected
+  else
+    newMat <- createRandomNetwork(nv, ne, bDirected = TRUE) # directed
+  return(newMat)
+}
+
+
+#' @title Calculate node exposure.
+#' @description Calculates incoming links for a node.
+#'
+#' @param node Index of the specified node.
+#' @param adjMat Adjacency matrix for the network.
+#' @param statusMat A matrix with statuses (NA, 0, any positive integer) of each unit. Rownames indicate location names, colnames indicate names of timepoints (e.g. years).
+#' @param column Column to analyze.
+#' 
+#' @return Statuses of incoming links for the specified node.
+# @details .
+#'
+#' @author Mikhail Churakov
+#' 
+#' @export
+calculateNodeExposure <- function(node, adjMat, statusMat, column = 1) {
   links <- which(adjMat > 0, arr.ind = T)
   
   sel <- which(links[, 1] == node)
@@ -71,19 +111,29 @@ calculateExposure <- function(node, adjMat, statusMat, column = 1) {
   # print(length(sel)) # Incoming links
   # print(links[sel, 2]) # Sources
   
-  links[sel, 2]
-  
-  # print(statusMat[links[sel, 2], column])
-  
   return(statusMat[links[sel, 2], column])
 }
 
 
+#' @title Calculate mean exposure.
+#' @description Calculates mean exposure from incoming links for a set of node.
+#'
+#' @param nodes Indices of the specified nodes.
+#' @param adjMat Adjacency matrix for the network.
+#' @param statusMat A matrix with statuses (NA, 0, any positive integer) of each unit. Rownames indicate location names, colnames indicate names of timepoints (e.g. years).
+#' @param column Column to analyze.
+#' 
+#' @return A vector with two elements: number of incoming links, number of incoming links from infectious units (status > 0).
+# @details .
+#'
+#' @author Mikhail Churakov
+#' 
+#' @export
 calculateMeanExposure <- function(nodes, adjMat, statusMat, column = 1) {
   links <- 0
   infLinks <- 0
   for (node in nodes) {
-    contacts <- calculateExposure(node, adjMat, statusMat, column)
+    contacts <- calculateNodeExposure(node, adjMat, statusMat, column)
     print(paste0(node, ": ", paste0(contacts, collapse = ", ")))
     
     links <- links + length(contacts)
