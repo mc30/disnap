@@ -44,25 +44,6 @@ createPPPList <- function(statusMat, coords, cols = c(1, 2), na.rm = FALSE) {
 }
 
 
-#' @title Plot PPP objects
-#' @description Plot all PPP objects from the provided list.
-#'
-#' @param lst List of PPP objects.
-#' 
-# @return .
-# @details .
-#'
-#' @author Mikhail Churakov
-#'
-#' @export
-plotPPPlist <- function(lst) {
-  old.par <- par(mfrow = c(1, length(lst)))
-  for (i in 1:length(lst))
-    plot(lst[[i]], main = names(lst)[i])
-  par(old.par)
-}
-
-
 #' @title Perform SaTScan test on PPP objects
 #' @description Runs SaTScan test (implemented in smacpod package) on each PPP object from the provided list.
 #'
@@ -89,34 +70,6 @@ satscanPPPlist <- function(lst) {
     
     out <- spscan.test(lst[[i]], case = 2, alpha = 0.1)
     plot(out, chars = c(1, 20), main = paste0("Most likely cluster: ", names(lst)[i]))
-  }
-  
-  par(old.par)
-}
-
-
-#' @title Plot density of PPP objects
-#' @description Plots density of all PPP objects from the provided list.
-#'
-#' @param lst List of PPP objects.
-#' 
-# @return .
-# @details .
-#'
-#' @author Mikhail Churakov
-#'
-#' @export
-densityPPPlist <- function(lst) {
-  # require(spatstat)
-  
-  old.par <- par(mfrow = c(2, length(lst)))
-  
-  for (i in 1:length(lst))
-    plot(density(lst[[i]]), main = "All tested herds")
-  
-  for (i in 1:length(lst)) {
-    pitem <- lst[[i]]
-    plot(density(pitem[which(pitem$marks > 0)]), main = paste0("Positive herds in: ", names(lst)[i])) # TODO: correct for factors
   }
   
   par(old.par)
